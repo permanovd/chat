@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import ChatRoom from './chat/components/ChatRoom';
 import './App.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import { LoginForm } from "./security/components/LoginForm";
+import { AuthService, User } from "./security/services/AuthService";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  private authService: AuthService;
+
+  constructor(props: any) {
+    super(props);
+    this.authService = new AuthService();
+  }
+
+  render() {
+    if (!this.authService.isAuthorized()) {
+      return (
+        <div className="root container" >
+          <LoginForm authService={this.authService} authorizedEvent={() => this.forceUpdate()} />
+          <ToastContainer />
+        </div>
+      );
+    }
+
+    const user: User = this.authService.currentUser() || { name: "error" };
+    return (
+      <div className="root container" >
+        <ChatRoom user={user} />
+        <ToastContainer />
+      </div>
+    );
+  }
 }
 
 export default App;
