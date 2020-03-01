@@ -1,5 +1,3 @@
-
-
 export interface User {
     name: string
 }
@@ -26,5 +24,4 @@ export class AuthService {
 
         return true;
     }
-
 }

@@ -29,10 +29,12 @@ export class LoginForm extends Component<{ authService: AuthService, authorizedE
     render() {
         return (
             <div className="row">
-                <div className="form-group col-3">
-                    <input className="form-control" type="text" placeholder="name" value={this.state.username} onChange={this.handleChange} />
-                    <input className="btn btn-primary" type="button" value="Log in" onClick={this.onLoginClick} />
-                </div>
+                <form onSubmit={this.onLoginClick}>
+                    <div className="form-group col-6">
+                        <input className="form-control" type="text" placeholder="name" value={this.state.username} onChange={this.handleChange} />
+                        <input className="btn btn-primary" type="submit" value="Log in" />
+                    </div>
+                </form>
             </div>
         );
     }

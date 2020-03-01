@@ -13,6 +13,7 @@ class App extends Component {
   constructor(props: any) {
     super(props);
     this.authService = new AuthService();
+    // this.authService = new MockAuthService();
   }
 
   render() {
@@ -28,7 +29,7 @@ class App extends Component {
     const user: User = this.authService.currentUser() || { name: "error" };
     return (
       <div className="root container" >
-        <ChatRoom user={user} />
+        <ChatRoom user={user} wsUrl="ws://172.29.128.2/chat" />
         <ToastContainer />
       </div>
     );
