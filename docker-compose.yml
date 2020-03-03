@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    restart: always
+    depends_on:
+      - mq
+    networks:
+      static-network:
+        ipv4_address: 172.29.128.2
+  mq:
+    image: "rabbitmq:3.7.4-management"
+    hostname: "rabbit1"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "dev"
+    networks:
+      static-network:
+        ipv4_address: 172.29.128.3
+    container_name: "mq"
+  front:
+    depends_on:
+      - api
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
+    networks:
+      static-network:
+        ipv4_address: 172.29.128.1
+
+networks:
+  backend:
+    driver: "bridge"
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.29.0.0/16
