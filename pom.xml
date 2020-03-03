@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.permanovd</groupId>
     <artifactId>chat_api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-RELEASE</version>
     <name>chat_api</name>
     <description>Api for chat application.</description>
 
