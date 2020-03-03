@@ -1,6 +1,6 @@
 FROM node:alpine as build
 WORKDIR /app
-ADD ./frontend /app
+ADD . /app
 ENV PATH /app/node_modules/.bin:$PATH
 RUN yarn
 RUN yarn build
