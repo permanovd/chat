@@ -24,9 +24,11 @@ services:
         ipv4_address: 172.29.128.3
     container_name: "mq"
   front:
+    depends_on:
+      - api
     build:
-      context: .
-      dockerfile: ./docker/frontend/Dockerfile
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
     networks:
       static-network:
         ipv4_address: 172.29.128.1
