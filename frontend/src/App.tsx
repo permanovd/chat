@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { LoginForm } from "./security/components/LoginForm";
 import { AuthService, User } from "./security/services/AuthService";
+import { MockAuthService } from './security/services/MockAuthService';
 
 class App extends Component {
   private authService: AuthService;
@@ -16,20 +17,33 @@ class App extends Component {
     // this.authService = new MockAuthService();
   }
 
-  render() {
+  renderHeader() {
+    return (
+      <div className="jumbotron">
+        <h1 className="display-4">Chat application</h1>
+      </div>
+    );
+  }
+
+  renderContent() {
     if (!this.authService.isAuthorized()) {
       return (
-        <div className="root container" >
-          <LoginForm authService={this.authService} authorizedEvent={() => this.forceUpdate()} />
-          <ToastContainer />
-        </div>
-      );
+        <LoginForm authService={this.authService} authorizedEvent={() => this.forceUpdate()} />
+      )
     }
-
     const user: User = this.authService.currentUser() || { name: "error" };
+
+    return (<ChatRoom user={user} wsUrl="ws://172.29.128.2/chat" />)
+  }
+
+  render() {
+    const header = this.renderHeader();
+    const content = this.renderContent();
+
     return (
       <div className="root container" >
-        <ChatRoom user={user} wsUrl="ws://172.29.128.2/chat" />
+        {header}
+        {content}
         <ToastContainer />
       </div>
     );

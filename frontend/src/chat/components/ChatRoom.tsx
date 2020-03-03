@@ -30,9 +30,6 @@ export class ChatRoom extends Component<ChatRoomProps, ChatRoomState> {
             connectHeaders: {
                 login: this.props.user.name,
             },
-            debug: function (str) {
-                console.log(str);
-            },
             reconnectDelay: 5000,
             heartbeatIncoming: 4000,
             heartbeatOutgoing: 4000
@@ -92,28 +89,29 @@ export class ChatRoom extends Component<ChatRoomProps, ChatRoomState> {
 
     renderMessages() {
         return this.state.messages.map((message: Message) => {
+            // Date format taken from https://stackoverflow.com/a/25279399/4082772
             return (
-                <div className="col-12">
-                    <div className="col-12">{message.author.name}</div>
-                    <div className="col-12">{message.text}</div>
-                    <div className="col-12">{message.date.toISOString()}</div>
+                <div className="col-12 alert alert-secondary">
+                    <span className="badge badge-primary">{message.author.name}</span>
+                    <span className="ml-1 badge badge-dark">{message.date.toISOString().substr(11, 8)}</span>
+                    <div className="mt-2 col-12">{message.text}</div>
                 </div>);
         });
     }
 
     render() {
         return (
-            <div className="row">
-                <div className="col-12">Welcome "{this.props.user.name}"</div>
+            <div className="row mb-5">
+                <div className="col-12"><div className="alert alert-success">Welcome user: "{this.props.user.name}"</div></div>
                 <hr />
                 <div className="col-12">{this.renderMessages()}</div>
                 <hr />
                 <div className="col-12">
-                    <form onSubmit={this.onMessageFormSubmit} >
-                        <div className="form-group">
-                            <input type="text" value={this.state.userInput} onChange={this.onMessageChanged} placeholder="message" />
-                            <input type="submit" className="btn btn-primary" value="Send" />
+                    <form className="form-inline" onSubmit={this.onMessageFormSubmit} >
+                        <div className="form-group col-11">
+                            <input type="text" className="form-control col-12" value={this.state.userInput} onChange={this.onMessageChanged} placeholder="message" />
                         </div>
+                        <input type="submit" className="btn btn-primary col-1" value="Send" />
                     </form>
                 </div>
             </div>
